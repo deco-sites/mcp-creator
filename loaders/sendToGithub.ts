@@ -8,12 +8,11 @@ import {
 } from "site/constants.ts";
 
 const token = Deno.env.get("GITHUB_TOKEN");
-const BRANCH_FEATURE = crypto.randomUUID();
 const headers: RequestInit["headers"] = {
   Authorization: `token ${token}`,
 };
-const prTitle = (name: string) =>
-  `New MCP server for ${name} in ${BRANCH_FEATURE}`;
+const prTitle = (name: string, branchFeature: string) =>
+  `New MCP server for ${name} in ${branchFeature}`;
 
 export interface Blob {
   path: string;
@@ -51,13 +50,13 @@ async function getBaseSha() {
   return latestCommit.sha as string;
 }
 
-async function createBranch() {
+async function createBranch(branchFeature: string) {
   try {
     const shaBase = await getBaseSha();
 
     const options: RequestInit = {
       body: JSON.stringify({
-        ref: `refs/heads/${BRANCH_FEATURE}`,
+        ref: `refs/heads/${branchFeature}`,
         sha: shaBase,
       }),
       method: "POST",
@@ -156,7 +155,7 @@ async function createCommit(treeSha: string, parentSha: string) {
   }
 }
 
-async function updateBranch(commitSha: string) {
+async function updateBranch(commitSha: string, branchFeature: string) {
   try {
     const options: RequestInit = {
       body: JSON.stringify({ sha: commitSha }),
@@ -164,7 +163,7 @@ async function updateBranch(commitSha: string) {
       method: "PATCH",
     };
     await fetch(
-      `https://api.github.com/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH_FEATURE}`,
+      `https://api.github.com/repos/${OWNER}/${REPO}/git/refs/heads/${branchFeature}`,
       options,
     );
   } catch (error) {
@@ -172,12 +171,12 @@ async function updateBranch(commitSha: string) {
   }
 }
 
-async function createPullRequest(name: string) {
+async function createPullRequest(name: string, branchFeature: string) {
   try {
     const options: RequestInit = {
       body: JSON.stringify({
-        title: prTitle(name),
-        head: BRANCH_FEATURE,
+        title: prTitle(name, branchFeature),
+        head: branchFeature,
         base: BRANCH_BASE,
         body: PR_BODY,
       }),
@@ -204,11 +203,12 @@ export default async function loader(
   _req: Request,
   _ctx: AppContext,
 ) {
-  await createBranch();
+  const BRANCH_FEATURE = crypto.randomUUID();
+  await createBranch(BRANCH_FEATURE);
   const blobs = await createBlobs(props);
   const baseTreeSha = await getBaseSha();
   const treeSha = await createTree(baseTreeSha, blobs);
   const commitSha = await createCommit(treeSha, baseTreeSha);
-  await updateBranch(commitSha);
-  return await createPullRequest(props.pathName);
+  await updateBranch(commitSha, BRANCH_FEATURE);
+  return await createPullRequest(props.pathName, BRANCH_FEATURE);
 }

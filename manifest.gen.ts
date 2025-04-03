@@ -3,13 +3,15 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $$$$$$$$$$$0 from "./apps/site.ts";
-import * as $$$0 from "./loaders/sendToGithub.ts";
+import * as $$$0 from "./loaders/generateOpenapi.ts";
+import * as $$$1 from "./loaders/sendToGithub.ts";
 import * as $$$$$$0 from "./sections/Footer.tsx";
 import * as $$$$$$1 from "./sections/Theme/Theme.tsx";
 
 const manifest = {
   "loaders": {
-    "site/loaders/sendToGithub.ts": $$$0,
+    "site/loaders/generateOpenapi.ts": $$$0,
+    "site/loaders/sendToGithub.ts": $$$1,
   },
   "sections": {
     "site/sections/Footer.tsx": $$$$$$0,
