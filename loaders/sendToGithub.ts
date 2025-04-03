@@ -8,7 +8,7 @@ import {
 } from "site/constants.ts";
 
 const token = Deno.env.get("GITHUB_TOKEN");
-const BRANCH_FEATURE = new Date().toISOString().replace(/[-:.TZ]/g, "");
+const BRANCH_FEATURE = crypto.randomUUID();
 const headers: RequestInit["headers"] = {
   Authorization: `token ${token}`,
 };
@@ -20,17 +20,25 @@ export interface Blob {
   sha: string;
 }
 
-export interface File {
+export interface FileWithUrl {
   name: string;
-  /*
+  /**
    * @description this is the file link (openapi.json)
    */
   urlFile: string;
 }
 
+export interface FileWithContent {
+  name: string;
+  /**
+   * @description this is the json in string (openapi.json)
+   */
+  content: string;
+}
+
 export interface Props {
   pathName: string;
-  files: File[];
+  files: Array<FileWithUrl | FileWithContent>;
 }
 
 async function getBaseSha() {
@@ -68,9 +76,11 @@ async function createBranch() {
 
 async function createBlobs({ files, pathName }: Props) {
   return await Promise.all(
-    files.map(async ({ urlFile, name }) => {
+    files.map(async ({ name, ...props }) => {
       try {
-        const file = await fetch(urlFile).then((r) => r.json());
+        const file = "urlFile" in props
+          ? await fetch(props.urlFile).then((r) => r.json())
+          : JSON.parse(props.content);
         const content = JSON.stringify(file, null, 2);
 
         const options: RequestInit = {
@@ -91,7 +101,7 @@ async function createBlobs({ files, pathName }: Props) {
           sha: response.sha,
         };
       } catch (error) {
-        console.error(`❌ Erro ao buscar ${urlFile}:`, error);
+        console.error(`❌ Erro ao buscar ${props}:`, error);
         return null;
       }
     }),
@@ -188,6 +198,7 @@ async function createPullRequest(name: string) {
   }
 }
 
+export const cache = "no-cache";
 export default async function loader(
   props: Props,
   _req: Request,
