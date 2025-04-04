@@ -6,7 +6,8 @@ import * as $$$$$$$$$$$0 from "./apps/site.ts";
 import * as $$$0 from "./loaders/generateOpenapi.ts";
 import * as $$$1 from "./loaders/sendToGithub.ts";
 import * as $$$$$$0 from "./sections/Footer.tsx";
-import * as $$$$$$1 from "./sections/Theme/Theme.tsx";
+import * as $$$$$$1 from "./sections/GeneratePr.tsx";
+import * as $$$$$$2 from "./sections/Theme/Theme.tsx";
 
 const manifest = {
   "loaders": {
@@ -15,7 +16,8 @@ const manifest = {
   },
   "sections": {
     "site/sections/Footer.tsx": $$$$$$0,
-    "site/sections/Theme/Theme.tsx": $$$$$$1,
+    "site/sections/GeneratePr.tsx": $$$$$$1,
+    "site/sections/Theme/Theme.tsx": $$$$$$2,
   },
   "apps": {
     "site/apps/site.ts": $$$$$$$$$$$0,

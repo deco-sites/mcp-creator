@@ -3,6 +3,12 @@
   "path": "/",
   "sections": [
     {
+      "__resolveType": "website/sections/Rendering/Lazy.tsx",
+      "section": {
+        "__resolveType": "site/sections/GeneratePr.tsx"
+      }
+    },
+    {
       "__resolveType": "Footer"
     }
   ],
