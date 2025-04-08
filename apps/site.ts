@@ -10,10 +10,8 @@ type Props =
   & Omit<
     WebsiteProps,
     | "theme"
-    | "flavor"
     | "caching"
     | "abTesting"
-    | "firstByteThresholdMS"
     | "errorPage"
     | "seo"
     | "avoidRedirectingToEditor"

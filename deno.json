@@ -80,7 +80,7 @@
       "exclude": ["jsx-button-has-type", "react-no-danger"]
     }
   },
-  "nodeModulesDir": false,
+  "nodeModulesDir": true,
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
