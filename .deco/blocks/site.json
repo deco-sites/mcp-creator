@@ -38,5 +38,15 @@
   },
   "flavor": {
     "framework": "fresh"
+  },
+  "githubToken": {
+    "__resolveType": "website/loaders/secret.ts",
+    "encrypted": "64becdad765c39a29cb0ead194328dbe98e2c69bc08543188687f4fedca1d0826cf0270f607bbc7367e7272d5758a2d4",
+    "name": "GITHUB_TOKEN"
+  },
+  "antropicToken": {
+    "__resolveType": "website/loaders/secret.ts",
+    "encrypted": "1294bb3acf1df3b8a91fa3a83c6a5dcd3fbc26784c8c69f0a5b977511ad988afa9c54b46bd1b0e4c92d7aba036192db72faec7945c8a7de35f2165b828b2d2117ced16ed96775bbc4cbad329d9a2e720ec3fe1cdde764edefe912c84fe274ace8fde147fe068989653e321c497b07dec",
+    "name": "ANTROPIC_TOKEN"
   }
 }

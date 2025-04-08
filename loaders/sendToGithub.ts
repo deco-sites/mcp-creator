@@ -6,11 +6,15 @@ import {
   PR_BODY,
   REPO,
 } from "site/constants.ts";
+import { GitHubVariables } from "site/utils/githubVariables.ts";
 
-const token = Deno.env.get("GITHUB_TOKEN");
-const headers: RequestInit["headers"] = {
-  Authorization: `token ${token}`,
-};
+export function getHeaders(): RequestInit["headers"] {
+  const token = GitHubVariables.getInstance().getToken();
+  return {
+    Authorization: `token ${token}`,
+  };
+}
+
 const prTitle = (name: string, branchFeature: string) =>
   `New MCP server for ${name} in ${branchFeature}`;
 
@@ -44,7 +48,7 @@ async function getBaseSha() {
   const latestCommit = await fetch(
     `https://api.github.com/repos/${OWNER}/${REPO}/commits/${BRANCH_BASE}`,
     {
-      headers,
+      headers: getHeaders(),
     },
   ).then((r) => r.json());
   return latestCommit.sha as string;
@@ -60,7 +64,7 @@ async function createBranch(branchFeature: string) {
         sha: shaBase,
       }),
       method: "POST",
-      headers,
+      headers: getHeaders(),
     };
 
     const response = await fetch(
@@ -87,7 +91,7 @@ async function createBlobs({ files, pathName }: Props) {
             content,
             encoding: "utf-8",
           }),
-          headers,
+          headers: getHeaders(),
           method: "POST",
         };
 
@@ -120,7 +124,7 @@ async function createTree(baseTreeSha: string, blobs: Blob[]) {
         })),
       }),
       method: "POST",
-      headers,
+      headers: getHeaders(),
     };
     const response = await fetch(
       `https://api.github.com/repos/${OWNER}/${REPO}/git/trees`,
@@ -141,7 +145,7 @@ async function createCommit(treeSha: string, parentSha: string) {
         tree: treeSha,
         parents: [parentSha],
       }),
-      headers,
+      headers: getHeaders(),
       method: "POST",
     };
     const response = await fetch(
@@ -159,7 +163,7 @@ async function updateBranch(commitSha: string, branchFeature: string) {
   try {
     const options: RequestInit = {
       body: JSON.stringify({ sha: commitSha }),
-      headers,
+      headers: getHeaders(),
       method: "PATCH",
     };
     await fetch(
@@ -180,7 +184,7 @@ async function createPullRequest(name: string, branchFeature: string) {
         base: BRANCH_BASE,
         body: PR_BODY,
       }),
-      headers,
+      headers: getHeaders(),
       method: "POST",
     };
     const response = await fetch(
@@ -201,9 +205,11 @@ export const cache = "no-cache";
 export default async function loader(
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) {
-  const BRANCH_FEATURE = crypto.randomUUID();
+  const gitHubVariables = GitHubVariables.getInstance();
+  gitHubVariables.setToken(ctx.githubToken.get() as string);
+  const BRANCH_FEATURE = gitHubVariables.generateBranchFeature();
   await createBranch(BRANCH_FEATURE);
   const blobs = await createBlobs(props);
   const baseTreeSha = await getBaseSha();

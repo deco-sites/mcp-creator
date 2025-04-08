@@ -6,9 +6,11 @@ export interface Props {
   url: string;
 }
 
-export const generateOpenApiJson = async ({ url }: Props) => {
+export const generateOpenApiJson = async (
+  { url, antropicToken }: Props & { antropicToken: string },
+) => {
   const client = new Anthropic({
-    apiKey: Deno.env.get("ANTROPIC_TOKEN"),
+    apiKey: antropicToken,
   });
 
   try {
@@ -43,11 +45,14 @@ export default async function loader(
   props: Props,
   _req: Request,
   ctx: AppContext,
-) {
-  const openapiJson = await generateOpenApiJson(props);
+): Promise<string> {
+  const openapiJson = await generateOpenApiJson({
+    ...props,
+    antropicToken: ctx.antropicToken.get() as string,
+  });
 
   return await ctx.invoke("site/loaders/sendToGithub.ts", {
     "pathName": props.name,
     "files": [{ name: props.name, content: JSON.stringify(openapiJson) }],
-  });
+  }) as string;
 }

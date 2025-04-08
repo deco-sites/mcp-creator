@@ -1,10 +1,27 @@
 import { App, AppContext as AC } from "deco/mod.ts";
-import website, { Props } from "apps/website/mod.ts";
+import website, { Props as WebsiteProps } from "apps/website/mod.ts";
 
 import manifest, { Manifest } from "../manifest.gen.ts";
+import { Secret } from "apps/website/loaders/secret.ts";
 
 type WebsiteApp = ReturnType<typeof website>;
 
+type Props =
+  & Omit<
+    WebsiteProps,
+    | "theme"
+    | "flavor"
+    | "caching"
+    | "abTesting"
+    | "firstByteThresholdMS"
+    | "errorPage"
+    | "seo"
+    | "avoidRedirectingToEditor"
+  >
+  & {
+    githubToken: Secret;
+    antropicToken: Secret;
+  };
 /**
  * @title Site
  * @description Start your site from a template or from scratch.
