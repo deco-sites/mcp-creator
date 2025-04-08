@@ -8,6 +8,20 @@ import {
 } from "site/constants.ts";
 import { GitHubVariables } from "site/utils/githubVariables.ts";
 
+export interface GithubReturn {
+  prUrl: string;
+  siteUrl: string;
+}
+
+export function consistentHash(inputString: string) {
+  let hash = 0;
+  for (let i = 0; i < inputString.length; i++) {
+    hash = (hash << 5) - hash + inputString.charCodeAt(i);
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(36);
+}
+
 export function getHeaders(): RequestInit["headers"] {
   const token = GitHubVariables.getInstance().getToken();
   return {
@@ -206,7 +220,7 @@ export default async function loader(
   props: Props,
   _req: Request,
   ctx: AppContext,
-) {
+): Promise<GithubReturn> {
   const gitHubVariables = GitHubVariables.getInstance();
   gitHubVariables.setToken(ctx.githubToken.get() as string);
   const BRANCH_FEATURE = gitHubVariables.generateBranchFeature();
@@ -216,5 +230,11 @@ export default async function loader(
   const treeSha = await createTree(baseTreeSha, blobs);
   const commitSha = await createCommit(treeSha, baseTreeSha);
   await updateBranch(commitSha, BRANCH_FEATURE);
-  return await createPullRequest(props.pathName, BRANCH_FEATURE);
+  const prUrl = await createPullRequest(props.pathName, BRANCH_FEATURE);
+  return {
+    prUrl,
+    siteUrl: `https://sites-mcp-apps--${
+      consistentHash(BRANCH_FEATURE)
+    }.decocdn.com/`,
+  };
 }

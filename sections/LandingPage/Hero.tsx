@@ -76,8 +76,9 @@ export default function Hero({
   enableAnimations = true,
   isDesktop
 }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [serverLink, setServerLink] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [serverLink, setServerLink] = useState<string>("");
+  const [prLink, setPrLink] = useState<string>("");
   const heroId = useId();
   const sectionId = `hero-${heroId}`;
 
@@ -148,7 +149,6 @@ export default function Hero({
 
       <form
         onSubmit={async (e) => {
-          console.log("rodei")
           try {
             e.preventDefault();
             e.stopPropagation();
@@ -157,14 +157,15 @@ export default function Hero({
             const docLink = form.elements.namedItem("doc-link") as HTMLInputElement;
             if ((docName.value && docLink.value) && (docName.value.length >= 1 && docLink.value.length >= 1)) {
               setIsLoading(true)
-              const githubUrl = await invoke({
+              const mcp = await invoke({
                 key: "site/loaders/generateOpenapi.ts",
                 props: {
                   name: docName.value,
                   url: docLink.value,
                 }
               })
-              setServerLink(githubUrl)
+              setServerLink(mcp.siteUrl)
+              setPrLink(mcp.prUrl)
             }
           } finally {
             setIsLoading(false)
@@ -208,8 +209,12 @@ export default function Hero({
               </div>
               {!isDesktop && <Button />}
               <span class="flex items-center gap-2 mr-auto">
-                <p>Your PR url:</p>
+                <p>Your MCP url:</p>
                 {serverLink && serverLink.length > 0 && <a href={serverLink} target="_blank"><p>{serverLink}</p></a>}
+              </span>
+              <span class="flex items-center gap-2 mr-auto">
+                <p>Your PR url:</p>
+                {prLink && prLink.length > 0 && <a href={prLink} target="_blank"><p>{prLink}</p></a>}
               </span>
             </div>
           </div>

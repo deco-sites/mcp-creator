@@ -1,5 +1,6 @@
 import { AppContext } from "site/apps/site.ts";
 import Anthropic from "@ai-sdk/anthropic";
+import { GithubReturn } from "site/loaders/sendToGithub.ts";
 
 export interface Props {
   name: string;
@@ -45,7 +46,7 @@ export default async function loader(
   props: Props,
   _req: Request,
   ctx: AppContext,
-): Promise<string> {
+): Promise<GithubReturn> {
   const openapiJson = await generateOpenApiJson({
     ...props,
     antropicToken: ctx.antropicToken.get() as string,
@@ -54,5 +55,5 @@ export default async function loader(
   return await ctx.invoke("site/loaders/sendToGithub.ts", {
     "pathName": props.name,
     "files": [{ name: props.name, content: JSON.stringify(openapiJson) }],
-  }) as string;
+  }) as GithubReturn;
 }

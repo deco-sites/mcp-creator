@@ -14,14 +14,14 @@ function GeneratePr() {
         const docLink = form.elements.namedItem("doc-link") as HTMLInputElement;
         if ((docName.value && docLink.value) && (docName.value.length >= 1 && docLink.value.length >= 1)) {
           setIsLoading(true)
-          const githubUrl = await invoke({
+          const mcp = await invoke({
             key: "site/loaders/generateOpenapi.ts",
             props: {
               name: docName.value,
               url: docLink.value,
             }
           })
-          setServerLink(githubUrl)
+          setServerLink(mcp.prUrl)
         }
       } finally {
         setIsLoading(false)
