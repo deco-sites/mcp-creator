@@ -37,7 +37,7 @@ export default function BackgroundWrapper({
   children,
 }: Props) {
   return (
-    <div class="relative min-h-screen bg-neutral-50 flex flex-col items-center overflow-hidden max-h-[100vh]">
+    <div class="relative bg-neutral-50 flex flex-col items-center overflow-hidden">
       {/* Background animation layer */}
       {enableBackground && (
         <div class="absolute inset-0 pointer-events-none overflow-hidden">

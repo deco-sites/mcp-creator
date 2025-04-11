@@ -4,9 +4,6 @@
   "sections": [
     {
       "__resolveType": "site/sections/LandingPage/LandingPage.tsx"
-    },
-    {
-      "__resolveType": "Footer"
     }
   ],
   "__resolveType": "website/pages/Page.tsx"

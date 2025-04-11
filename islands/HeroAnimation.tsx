@@ -2,6 +2,7 @@ import { useEffect } from "preact/hooks";
 
 declare global {
   interface Window {
+    // deno-lint-ignore no-explicit-any
     gsap: any;
   }
 }
@@ -13,8 +14,8 @@ interface Props {
 export default function HeroAnimation({ selector }: Props) {
   useEffect(() => {
     // Check if gsap is available (we'll add the script in a moment)
-    if (typeof window.gsap !== "undefined") {
-      const gsap = window.gsap;
+    if (typeof globalThis.window.gsap !== "undefined") {
+      const gsap = globalThis.window.gsap;
 
       // Main animation sequence for consistency across components
       const tl = gsap.timeline({

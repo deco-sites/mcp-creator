@@ -1,1 +1,1 @@
-export { default } from "site/sections/LandingPage/Hero.tsx"
+export { default } from "site/sections/LandingPage/Hero.tsx";

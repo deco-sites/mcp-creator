@@ -1,4 +1,3 @@
-
 import {
   useCallback,
   useEffect,
@@ -35,7 +34,10 @@ export default function FlickeringGrid({
 
   const memoizedColor = useMemo(() => {
     const toRGBA = (color: string) => {
-      if (typeof globalThis.window === "undefined" || typeof globalThis.document === "undefined") {
+      if (
+        typeof globalThis.window === "undefined" ||
+        typeof globalThis.document === "undefined"
+      ) {
         return `rgba(100, 100, 100,`;
       }
       const canvas = globalThis.window.document.createElement("canvas");
@@ -180,11 +182,11 @@ export default function FlickeringGrid({
     return () => {
       cancelAnimationFrame(animationFrameId);
       if (typeof ResizeObserver !== "undefined") {
-        const resizeObserver = new ResizeObserver(() => { });
+        const resizeObserver = new ResizeObserver(() => {});
         resizeObserver.disconnect();
       }
       if (typeof IntersectionObserver !== "undefined") {
-        const intersectionObserver = new IntersectionObserver(() => { });
+        const intersectionObserver = new IntersectionObserver(() => {});
         intersectionObserver.disconnect();
       }
     };

@@ -1,1 +1,1 @@
-export { default } from "site/sections/GeneratePr.tsx"
+export { default } from "site/sections/GeneratePr.tsx";
