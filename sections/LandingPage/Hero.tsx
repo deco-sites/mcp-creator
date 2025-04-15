@@ -66,13 +66,13 @@ export interface Props {
 }
 
 export default function Hero({
-  titleFirstPart = "Turn",
-  titleHighlight = "any API documentation",
+  titleFirstPart = "Turn ",
+  titleHighlight = "any API documentation ",
   titleLastPart = "into a simple MCP server.",
   inputPlaceholder = "https://docs.com/...",
   buttonText = "Generate",
   descriptionText =
-    "Enter your Docs link here and generate a brand new MCP link",
+  "Enter your Docs link here and generate a brand new MCP link",
   enableAnimations = true,
   isDesktop,
 }: Props) {
