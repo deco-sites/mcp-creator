@@ -4,6 +4,15 @@
   "sections": [
     {
       "__resolveType": "site/sections/LandingPage/LandingPage.tsx"
+    },
+    {
+      "__resolveType": "website/sections/Rendering/Lazy.tsx",
+      "section": {
+        "__resolveType": "website/sections/Seo/SeoV2.tsx",
+        "favicon": "https://assets.decocache.com/mcp-creator/23dcba4a-fdc8-4a73-a9a6-95c14eac8554/favicon-docs2mcp.svg",
+        "canonical": "https://www.docs2mcp.com/",
+        "title": "Docs2Mcp"
+      }
     }
   ],
   "__resolveType": "website/pages/Page.tsx"
