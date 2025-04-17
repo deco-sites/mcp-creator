@@ -1,5 +1,5 @@
-import Navbar from "./NavBar.tsx";
-import Hero from "./Hero.tsx";
+import Navbar, { Props as NavBarProps } from "./NavBar.tsx";
+import Hero, { Props as HeroProps } from "./Hero.tsx";
 import CustomFooter, { Props as FooterProps } from "./CustomFooter.tsx";
 import { useDevice } from "@deco/deco/hooks";
 
@@ -7,24 +7,12 @@ export interface Props {
   /**
    * @title Navbar Properties
    */
-  navbarProps?: {
-    buttonText?: string;
-    enableAnimations?: boolean;
-  };
+  navbarProps?: NavBarProps;
 
   /**
    * @title Hero Properties
    */
-  heroProps?: {
-    titleFirstPart?: string;
-    titleHighlight?: string;
-    titleLastPart?: string;
-    inputPlaceholder?: string;
-    buttonText?: string;
-    descriptionText?: string;
-    repoLink?: string;
-    enableAnimations?: boolean;
-  };
+  heroProps?: HeroProps;
 
   /**
    * @title Footer Properties

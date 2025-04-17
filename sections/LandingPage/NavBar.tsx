@@ -41,8 +41,8 @@ export interface Props {
 export default function Navbar({
   buttonText = "Get in touch",
   buttonUrl =
-    "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2CaepfbH88P8rgiRP8fEEBXy2eu6e5yCvJfq9CznemLqJ0dEwXgtR_JSEMb1f9yfVYlHcpTZwM",
-  githubUrl = "https://github.com/deco-cx",
+  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2CaepfbH88P8rgiRP8fEEBXy2eu6e5yCvJfq9CznemLqJ0dEwXgtR_JSEMb1f9yfVYlHcpTZwM",
+  githubUrl = "https://github.com/deco-sites/mcp-apps/",
   discordUrl = "https://discord.gg/deco-cx",
   enableAnimations = true,
 }: Props) {
